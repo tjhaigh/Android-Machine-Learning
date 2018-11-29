@@ -28,17 +28,20 @@ def read_layouts(dataset_dir):
     data = []
     labels = []
     for f in os.listdir(dataset_dir):
-        with open(os.path.join(dataset_dir, f), 'r') as xml_file:
-            for xml in xml_file:
-                parsed_data = parse_xml(xml)
-        data.append(parsed_data)
-
-        # labels the data. filenames have '1' in them if they have a send button. 
-        # '2' is the same app with no send button
-        if '1' in f:
-            labels.append(1)
+        if f.endswith('.xml'):
+            with open(os.path.join(dataset_dir, f), 'r') as xml_file:
+                for xml in xml_file:
+                    parsed_data = parse_xml(xml)
+            data.append(parsed_data)
+    
+            # labels the data. filenames have '1' in them if they have a send button. 
+            # '2' is the same app with no send button
+            if '1' in f:
+                labels.append(1)
+            else:
+                labels.append(0)
         else:
-            labels.append(0)
+            print(f, ' is not an xml file')
 
     return data, labels
 
